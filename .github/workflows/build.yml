@@ -1,0 +1,20 @@
+name: Build EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install MinGW
+        run: |
+          choco install mingw -y
+          echo "##vso[task.prependpath]C:\tools\mingw64\bin"
+      - name: Build
+        run: gcc main.c -o myapp.exe -mwindows
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: myapp
+          path: myapp.exe
